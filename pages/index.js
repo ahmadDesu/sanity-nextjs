@@ -55,7 +55,7 @@ export default function IndexPage({ pets }) {
               <li key={pet._id}>
                 {renderPetContent(pet.content)}
                 <h3>{pet.name}</h3>
-                <p>{pet?.content?.text?.[0]}</p>
+                <p>{pet.name[content][text][0]}</p>
               </li>
             ))}
           </ul>
