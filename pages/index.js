@@ -1,6 +1,6 @@
 import { createClient } from "next-sanity";
 function getImageSrc(imageRef) {
-  const imageName = imageRef.replace("image-", "").replace(/-/g, ".");
+  const imageName = imageRef.replace("image-", "").replace("-jpg", ".jpg");
   return `https://cdn.sanity.io/images/mih1agps/production/${imageName}`;
 }
 
