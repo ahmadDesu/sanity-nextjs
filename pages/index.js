@@ -50,7 +50,7 @@ const client = createClient({
   projectId: "mih1agps",
   dataset: "production",
   apiVersion: "2021-10-21",
-  useCdn: false
+  useCdn: false,
 });
 
 export async function getStaticProps() {
@@ -58,7 +58,7 @@ export async function getStaticProps() {
 
   return {
     props: {
-      pets
+      pets,
     },
     revalidate: 10,
   };
