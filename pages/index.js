@@ -34,16 +34,36 @@ function renderPetContent(content) {
     return null;
   }
 
+  let firstImageSrc = "";
+  let firstText = "";
+
   for (const block of content) {
-    if (block._type === "span" && block.text) {
-      return <p>{block.text}</p>;
-    } else if (block._type === "image" && block.asset && block.asset._ref) {
-      const imageSrc = getImageSrc(block.asset._ref);
-      return <img src={imageSrc} alt="Pet Image" />;
+    if (block._type === "image" && block.asset?._ref && !firstImageSrc) {
+      firstImageSrc = getImageSrc(block.asset._ref);
+    } else if (block._type === "block" && block.children) {
+      for (const child of block.children) {
+        if (child._type === "span" && child.text && !firstText) {
+          firstText = child.text;
+          break;
+        }
+      }
+    }
+
+    if (firstImageSrc && firstText) {
+      break;
     }
   }
 
-  return null;
+  if (firstImageSrc) {
+    return (
+      <>
+        {firstImageSrc && <img src={firstImageSrc} alt="Pet Image" />}
+        {firstText && <p>{firstText}</p>}
+      </>
+    );
+  } else {
+    return null;
+  }
 }
 
 const client = createClient({
