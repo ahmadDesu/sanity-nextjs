@@ -25,9 +25,8 @@ export default function IndexPage({ pets }) {
 }
 
 function getImageSrc(imageRef) {
-  const imageName = imageRef.replace("image-", "").replace(/-/g, ".");
-  const dimensions = "-3000x2000.jpg";
-  return `https://cdn.sanity.io/images/mih1agps/production/${imageName}${dimensions}`;
+  const imageName = imageRef.replace("image-", "").replace("-jpg", ".jpg");
+  return `https://cdn.sanity.io/images/mih1agps/production/${imageName}`;
 }
 
 function renderPetContent(content) {
