@@ -1,4 +1,33 @@
 import { createClient } from "next-sanity";
+
+export default function IndexPage({ pets }) {
+  return (
+    <>
+      <header>
+        <h1>Sanity + Next.js</h1>
+      </header>
+      <main>
+        <h2>Pets</h2>
+        {pets.length > 0 ? (
+          <ul>
+            {pets.map((pet) => (
+              <li key={pet._id}>
+                {getFirstImage(pet.content) && (
+                  <img src={getFirstImage(pet.content)} id="thumbnail-post" alt="thumbnail" />
+                )}
+                <h3>{pet.name}</h3>
+                {getFirstText(pet.content) && <p>{getFirstText(pet.content)}</p>}
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <p>No pets to show</p>
+        )}
+      </main>
+    </>
+  );
+}
+
 function getImageSrc(imageRef) {
   const imageName = imageRef.replace("image-", "").replace("-jpg", ".jpg");
   return `https://cdn.sanity.io/images/mih1agps/production/${imageName}`;
@@ -34,34 +63,6 @@ function getFirstText(content) {
   }
 
   return null;
-}
-
-export default function IndexPage({ pets }) {
-  return (
-    <>
-      <header>
-        <h1>Sanity + Next.js</h1>
-      </header>
-      <main>
-        <h2>Pets</h2>
-        {pets.length > 0 ? (
-          <ul>
-            {pets.map((pet) => (
-              <li key={pet._id}>
-                {getFirstImage(pet.content) && (
-                  <img src={getFirstImage(pet.content)} id="thumbnail-post" alt="thumbnail" />
-                )}
-                <h3>{pet.name}</h3>
-                {getFirstText(pet.content) && <p>{getFirstText(pet.content)}</p>}
-              </li>
-            ))}
-          </ul>
-        ) : (
-          <p>No pets to show</p>
-        )}
-      </main>
-    </>
-  );
 }
 
 const client = createClient({
