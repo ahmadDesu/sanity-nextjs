@@ -25,8 +25,8 @@ export default function IndexPage({ pets }) {
 }
 
 function getImageSrc(imageRef) {
-  const imageName = imageRef.replace("image-", "").replace(/-/g, ".");
-  return `https://cdn.sanity.io/images/mih1agps/production/${imageName}-3000x2000.jpg`;
+  const imageName = imageRef.replace("image-", "").replace("-jpg", ".jpg");
+  return `https://cdn.sanity.io/images/mih1agps/production/${imageName}`;
 }
 
 function renderPetContent(content) {
@@ -34,16 +34,19 @@ function renderPetContent(content) {
     return null;
   }
 
-  for (const block of content) {
-    if (block._type === "span" && block.text) {
-      return <p>{block.text}</p>;
-    } else if (block._type === "image" && block.asset && block.asset._ref) {
-      const imageSrc = getImageSrc(block.asset._ref);
-      return <img src={imageSrc} alt="Pet Image" />;
+  let firstImageSrc = "";
+  for (const child of content) {
+    if (child._type === "image" && child.asset?._ref) {
+      firstImageSrc = getImageSrc(child.asset._ref);
+      break;
     }
   }
 
-  return null;
+  if (firstImageSrc) {
+    return <img src={firstImageSrc} alt="Pet Image" />;
+  } else {
+    return null;
+  }
 }
 
 const client = createClient({
