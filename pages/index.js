@@ -6,28 +6,23 @@ export default function IndexPage({ pets }) {
         <h1>Sanity + Next.js</h1>
       </header>
       <main>
-        <h2>pets</h2>
-        {pets.length > 0 && (
+        <h2>Pets</h2>
+        {pets.length > 0 ? (
           <ul>
             {pets.map((pet) => (
-              <li key={pet._id}>{pet?.name}</li>
+              <li key={pet._id}>
+                <h3>{pet.name}</h3>
+                {pet.content.length > 0 && pet.content[0]._type === "span" && (
+                  <p>{pet.content[0].text}</p>
+                )}
+                {pet.content.length > 0 && pet.content[0]._type === "image" && (
+                  <img src={pet.content[0].asset._ref} alt={pet.name} />
+                )}
+              </li>
             ))}
           </ul>
-        )}
-        {!pets.length > 0 && <p>No pets to show</p>}
-        {pets.length > 0 && (
-          <div>
-            <pre>{JSON.stringify(pets, null, 2)}</pre>
-          </div>
-        )}
-        {!pets.length > 0 && (
-          <div>
-            <div>¯\_(ツ)_/¯</div>
-            <p>
-              Your data will show up here when you've configured everything
-              correctly
-            </p>
-          </div>
+        ) : (
+          <p>No pets to show</p>
         )}
       </main>
     </>
