@@ -12,12 +12,7 @@ export default function IndexPage({ pets }) {
             {pets.map((pet) => (
               <li key={pet._id}>
                 <h3>{pet.name}</h3>
-                {pet.content.length > 0 && pet.content[0]._type === "span" && (
-                  <p>{pet.content[0].text}</p>
-                )}
-                {pet.content.length > 0 && pet.content[0]._type === "image" && (
-                  <img src={pet.content[0].asset._ref} alt={pet.name} />
-                )}
+                {renderPetContent(pet.content)}
               </li>
             ))}
           </ul>
@@ -27,6 +22,22 @@ export default function IndexPage({ pets }) {
       </main>
     </>
   );
+}
+
+function renderPetContent(content) {
+  if (!content || content.length === 0) {
+    return null;
+  }
+
+  for (const block of content) {
+    if (block._type === "span" && block.text) {
+      return <p>{block.text}</p>;
+    } else if (block._type === "image" && block.asset && block.asset._ref) {
+      return <img src={block.asset._ref} alt="Pet Image" />;
+    }
+  }
+
+  return null;
 }
 
 const client = createClient({
