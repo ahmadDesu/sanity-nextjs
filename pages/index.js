@@ -1,31 +1,6 @@
 import { createClient } from "next-sanity";
-export default function IndexPage({ pets }) {
-  return (
-    <>
-      <header>
-        <h1>Sanity + Next.js</h1>
-      </header>
-      <main>
-        <h2>Pets</h2>
-        {pets.length > 0 ? (
-          <ul>
-            {pets.map((pet) => (
-              <li key={pet._id}>
-                <h3>{pet.name}</h3>
-                {renderPetContent(pet.content)}
-              </li>
-            ))}
-          </ul>
-        ) : (
-          <p>No pets to show</p>
-        )}
-      </main>
-    </>
-  );
-}
-
 function getImageSrc(imageRef) {
-  const imageName = imageRef.replace("image-", "").replace("-jpg", ".jpg");
+  const imageName = imageRef.replace("image-", "").replace(/-/g, ".");
   return `https://cdn.sanity.io/images/mih1agps/production/${imageName}`;
 }
 
@@ -64,6 +39,32 @@ function renderPetContent(content) {
   } else {
     return null;
   }
+}
+
+export default function IndexPage({ pets }) {
+  return (
+    <>
+      <header>
+        <h1>Sanity + Next.js</h1>
+      </header>
+      <main>
+        <h2>Pets</h2>
+        {pets.length > 0 ? (
+          <ul>
+            {pets.map((pet) => (
+              <li key={pet._id}>
+                {renderPetContent(pet.content)}
+                <h3>{pet.name}</h3>
+                <p>{pet?.content?.text?.[0]}</p>
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <p>No pets to show</p>
+        )}
+      </main>
+    </>
+  );
 }
 
 const client = createClient({
