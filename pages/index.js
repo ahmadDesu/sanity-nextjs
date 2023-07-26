@@ -24,6 +24,11 @@ export default function IndexPage({ pets }) {
   );
 }
 
+function getImageSrc(imageRef) {
+  const imageName = imageRef.replace("image-", "").replace(/-/g, ".");
+  return imageName;
+}
+
 function renderPetContent(content) {
   if (!content || content.length === 0) {
     return null;
@@ -33,7 +38,8 @@ function renderPetContent(content) {
     if (block._type === "span" && block.text) {
       return <p>{block.text}</p>;
     } else if (block._type === "image" && block.asset && block.asset._ref) {
-      return <img src={block.asset._ref} alt="Pet Image" />;
+      const imageSrc = getImageSrc(block.asset._ref);
+      return <img src={imageSrc} alt="Pet Image" />;
     }
   }
 
