@@ -1,44 +1,39 @@
 import { createClient } from "next-sanity";
 function getImageSrc(imageRef) {
-  const imageName = imageRef.replace("image-", "").replace("-jpg", ".jpg");
+  const imageName = imageRef.replace("image-", "").replace(/-/g, ".");
   return `https://cdn.sanity.io/images/mih1agps/production/${imageName}`;
 }
 
-function renderPetContent(content) {
+function getFirstImage(content) {
   if (!content || content.length === 0) {
     return null;
   }
 
-  let firstImageSrc = "";
-  let firstText = "";
+  for (const block of content) {
+    if (block._type === "image" && block.asset?._ref) {
+      return getImageSrc(block.asset._ref);
+    }
+  }
+
+  return null;
+}
+
+function getFirstText(content) {
+  if (!content || content.length === 0) {
+    return null;
+  }
 
   for (const block of content) {
-    if (block._type === "image" && block.asset?._ref && !firstImageSrc) {
-      firstImageSrc = getImageSrc(block.asset._ref);
-    } else if (block._type === "block" && block.children) {
+    if (block._type === "block" && block.children) {
       for (const child of block.children) {
-        if (child._type === "span" && child.text && !firstText) {
-          firstText = child.text;
-          break;
+        if (child._type === "span" && child.text) {
+          return child.text;
         }
       }
     }
-
-    if (firstImageSrc && firstText) {
-      break;
-    }
   }
 
-  if (firstImageSrc) {
-    return (
-      <>
-        {firstImageSrc && <img src={firstImageSrc} alt="Pet Image" />}
-        {firstText && <p>{firstText}</p>}
-      </>
-    );
-  } else {
-    return null;
-  }
+  return null;
 }
 
 export default function IndexPage({ pets }) {
@@ -53,9 +48,11 @@ export default function IndexPage({ pets }) {
           <ul>
             {pets.map((pet) => (
               <li key={pet._id}>
-                {renderPetContent(pet.content)}
+                {getFirstImage(pet.content) && (
+                  <img src={getFirstImage(pet.content)} id="thumbnail-post" alt="thumbnail" />
+                )}
                 <h3>{pet.name}</h3>
-                <p>{pet.name[content][text][0]}</p>
+                {getFirstText(pet.content) && <p>{getFirstText(pet.content)}</p>}
               </li>
             ))}
           </ul>
