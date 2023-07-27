@@ -24,6 +24,7 @@ export default function IndexPage({ pets }) {
                 {getFirstText(pet.content) && (
                   <p>{getFirstText(pet.content)}</p>
                 )}
+                {pet._createdAt && <p>Created at: {formatDate(pet._createdAt)}</p>}
               </li>
             ))}
           </ul>
@@ -70,6 +71,13 @@ function getFirstText(content) {
   }
 
   return null;
+}
+
+// date created function
+function formatDate(dateString) {
+  const date = new Date(dateString);
+  const options = { year: "numeric", month: "long", day: "numeric" };
+  return date.toLocaleDateString("en-US", options);
 }
 
 const client = createClient({
