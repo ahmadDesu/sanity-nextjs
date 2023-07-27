@@ -24,7 +24,9 @@ export default function IndexPage({ pets }) {
                 {getFirstText(pet.content) && (
                   <p>{getFirstText(pet.content)}</p>
                 )}
-                {pet._createdAt && <p>Created at: {formatDate(pet._createdAt)}</p>}
+                {pet._createdAt && (
+                  <p>Created at: {formatDate(pet._createdAt, "WIB")}</p>
+                )}
               </li>
             ))}
           </ul>
@@ -74,7 +76,13 @@ function getFirstText(content) {
 }
 
 // date created function
-function formatDate(dateString) {
+const timeZones = {
+  WIB: "Asia/Jakarta",
+  WITA: "Asia/Makassar",
+  WIT: "Asia/Jayapura",
+};
+
+function formatDate(dateString, timeZone) {
   const date = new Date(dateString);
   const options = {
     year: "numeric",
@@ -82,9 +90,20 @@ function formatDate(dateString) {
     day: "numeric",
     hour: "2-digit",
     minute: "2-digit",
-    timeZoneName: "short",
   };
-  return date.toLocaleDateString("en-US", options);
+  const formattedDate = date.toLocaleDateString("en-US", options);
+
+  if (timeZone && timeZones[timeZone]) {
+    const timeZoneAbbr = timeZone.toUpperCase();
+    const timeZoneName = Intl.DateTimeFormat("en-US", {
+      timeZone: timeZones[timeZone],
+      timeZoneName: "short",
+    }).format(date);
+
+    return `${formattedDate}, ${timeZoneName.replace(timeZoneAbbr, timeZone)}`;
+  }
+
+  return formattedDate;
 }
 
 const client = createClient({
