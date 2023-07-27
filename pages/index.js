@@ -1,6 +1,7 @@
 import { createClient } from "next-sanity";
 
 export default function IndexPage({ pets }) {
+  pets.sort((a, b) => new Date(b._createdAt) - new Date(a._createdAt));
   return (
     <>
       <header>
