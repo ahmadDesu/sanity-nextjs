@@ -63,7 +63,7 @@ li {
   border-radius: 0.25rem;
 }
 
-.thumbnail-post {
+#thumbnail-post {
   position: relative;
 
   width: 300px;
