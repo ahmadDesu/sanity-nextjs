@@ -26,7 +26,7 @@ export default function IndexPage({ pets }) {
                   <p>{getFirstText(pet.content)}</p>
                 )}
                 {pet._createdAt && (
-                  <p>{formatDate(pet._createdAt, "WIB")}</p>
+                  <p>{formatDate(pet._createdAt, "Asia/Jakarta")}</p>
                 )}
               </li>
             ))}
@@ -77,6 +77,17 @@ function getFirstText(content) {
 }
 
 // date created function
+function getTimeZoneAbbreviation(timeZone) {
+  const timeZoneAbbreviations = {
+    "Asia/Jakarta": "WIB",
+    "Asia/Makassar": "WITA",
+    "Asia/Jayapura": "WIT",
+    // Add other time zones and their abbreviations here if needed
+  };
+
+  return timeZoneAbbreviations[timeZone] || "";
+}
+
 function formatDate(dateString, timeZone) {
   const date = new Date(dateString);
   const options = {
@@ -85,15 +96,20 @@ function formatDate(dateString, timeZone) {
     day: "numeric",
     hour: "numeric",
     minute: "numeric",
-    timeZoneName: "short",
   };
-  const formatter = new Intl.DateTimeFormat("en-US", options);
+  const formatter = new Intl.DateTimeFormat("en-US", {
+    ...options,
+    timeZoneName: "short",
+  });
 
   if (timeZone) {
     formatter.timeZone = timeZone;
   }
 
-  return `Created at: ${formatter.format(date)}`;
+  const formattedDate = formatter.format(date);
+  const timeZoneAbbreviation = getTimeZoneAbbreviation(timeZone);
+
+  return `Created at: ${formattedDate} ${timeZoneAbbreviation}`;
 }
 
 const client = createClient({
