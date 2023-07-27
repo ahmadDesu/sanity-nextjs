@@ -76,7 +76,14 @@ function getFirstText(content) {
 // date created function
 function formatDate(dateString) {
   const date = new Date(dateString);
-  const options = { year: "numeric", month: "long", day: "numeric" };
+  const options = {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+    timeZoneName: "short",
+  };
   return date.toLocaleDateString("en-US", options);
 }
 
