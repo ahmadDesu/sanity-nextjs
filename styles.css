@@ -62,3 +62,10 @@ li {
   font-weight: 600;
   border-radius: 0.25rem;
 }
+
+.thumbnail-post {
+  position: relative;
+
+  width: 300px;
+  height: 300px;
+}
