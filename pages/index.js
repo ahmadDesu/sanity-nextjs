@@ -2,6 +2,7 @@ import { createClient } from "next-sanity";
 
 export default function IndexPage({ pets }) {
   pets.sort((a, b) => new Date(b._createdAt) - new Date(a._createdAt));
+
   return (
     <>
       <header>
@@ -25,7 +26,7 @@ export default function IndexPage({ pets }) {
                   <p>{getFirstText(pet.content)}</p>
                 )}
                 {pet._createdAt && (
-                  <p>Created at: {formatDate(pet._createdAt, "WIB")}</p>
+                  <p>{formatDate(pet._createdAt, "WIB")}</p>
                 )}
               </li>
             ))}
@@ -76,34 +77,23 @@ function getFirstText(content) {
 }
 
 // date created function
-const timeZones = {
-  WIB: "Asia/Jakarta",
-  WITA: "Asia/Makassar",
-  WIT: "Asia/Jayapura",
-};
-
 function formatDate(dateString, timeZone) {
   const date = new Date(dateString);
   const options = {
     year: "numeric",
     month: "long",
     day: "numeric",
-    hour: "2-digit",
-    minute: "2-digit",
+    hour: "numeric",
+    minute: "numeric",
+    timeZoneName: "short",
   };
-  const formattedDate = date.toLocaleDateString("en-US", options);
+  const formatter = new Intl.DateTimeFormat("en-US", options);
 
-  if (timeZone && timeZones[timeZone]) {
-    const timeZoneAbbr = timeZone.toUpperCase();
-    const timeZoneName = Intl.DateTimeFormat("en-US", {
-      timeZone: timeZones[timeZone],
-      timeZoneName: "short",
-    }).format(date);
-
-    return `${formattedDate}, ${timeZoneName.replace(timeZoneAbbr, timeZone)}`;
+  if (timeZone) {
+    formatter.timeZone = timeZone;
   }
 
-  return formattedDate;
+  return `Created at: ${formatter.format(date)}`;
 }
 
 const client = createClient({
