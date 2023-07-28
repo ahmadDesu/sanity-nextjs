@@ -16,23 +16,23 @@ export default function IndexPage({ pets }) {
         {pets.length > 0 ? (
           <ul>
             {pets.map((pet) => (
-              <li key={pet._id} onClick={() => navigateToDetailPage(pet._id)}>
-                <a style={{ pointerEvents: "none", cursor: "default" }}>
-                  {getFirstImage(pet.content) && (
-                    <img
-                      src={getFirstImage(pet.content)}
-                      id="thumbnail-post"
-                      alt="thumbnail"
-                    />
-                  )}
-                  <h3>{pet.name}</h3>
-                  {getFirstText(pet.content) && (
-                    <p>{getFirstText(pet.content)}</p>
-                  )}
-                  {pet._createdAt && (
-                    <p>{formatDate(pet._createdAt, "Asia/Jakarta")}</p>
-                  )}
-                </a>
+              <li key={pet._id}>
+                <Link href={`/detail/${pet._id}`}>
+                  <a>
+                    {getFirstImage(pet.content) && (
+                      <img
+                        src={getFirstImage(pet.content)}
+                        id="thumbnail-post"
+                        alt="thumbnail"
+                      />
+                    )}
+                    <h3>{pet.name}</h3>
+                    {getFirstText(pet.content) && <p>{getFirstText(pet.content)}</p>}
+                    {pet._createdAt && (
+                      <p>{formatDate(pet._createdAt, "Asia/Jakarta")}</p>
+                    )}
+                  </a>
+                </Link>
               </li>
             ))}
           </ul>
