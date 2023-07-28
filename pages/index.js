@@ -20,7 +20,7 @@ export default function IndexPage({ pets }) {
                 <Link href={{
                   pathname: "/detail",
                   query: {
-                    search: 'search'
+                    search: 'hi ganteng!!!'
                   }
                 }}>
                   <a>
