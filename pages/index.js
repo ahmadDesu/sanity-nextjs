@@ -1,5 +1,7 @@
-import Link from "next/link";
+import { useEffect, useState } from "react";
 import { createClient } from "next-sanity";
+import Link from "next/link";
+import { useRouter } from "next/router";
 
 export default function IndexPage({ pets }) {
   pets.sort((a, b) => new Date(b._createdAt) - new Date(a._createdAt));
@@ -14,23 +16,23 @@ export default function IndexPage({ pets }) {
         {pets.length > 0 ? (
           <ul>
             {pets.map((pet) => (
-              <li key={pet._id}>
-                <Link href={`/detail/${pet._id}`}>
-                  <a>
-                    {getFirstImage(pet.content) && (
-                      <img
-                        src={getFirstImage(pet.content)}
-                        id="thumbnail-post"
-                        alt="thumbnail"
-                      />
-                    )}
-                    <h3>{pet.name}</h3>
-                    {getFirstText(pet.content) && <p>{getFirstText(pet.content)}</p>}
-                    {pet._createdAt && (
-                      <p>{formatDate(pet._createdAt, "Asia/Jakarta")}</p>
-                    )}
-                  </a>
-                </Link>
+              <li key={pet._id} onClick={() => navigateToDetailPage(pet._id)}>
+                <a style={{ pointerEvents: "none", cursor: "default" }}>
+                  {getFirstImage(pet.content) && (
+                    <img
+                      src={getFirstImage(pet.content)}
+                      id="thumbnail-post"
+                      alt="thumbnail"
+                    />
+                  )}
+                  <h3>{pet.name}</h3>
+                  {getFirstText(pet.content) && (
+                    <p>{getFirstText(pet.content)}</p>
+                  )}
+                  {pet._createdAt && (
+                    <p>{formatDate(pet._createdAt, "Asia/Jakarta")}</p>
+                  )}
+                </a>
               </li>
             ))}
           </ul>
@@ -79,6 +81,12 @@ function getFirstText(content) {
   return null;
 }
 
+//function route
+function navigateToDetailPage(petId) {
+  const router = useRouter();
+  router.push(`/detail/${petId}`);
+}
+
 // date created function
 function getTimeZoneAbbreviation(timeZone) {
   const timeZoneAbbreviations = {
@@ -109,7 +117,10 @@ function formatDate(dateString, timeZone) {
 
   const [month, day, year] = formatter
     .formatToParts(date)
-    .filter((part) => part.type === "month" || part.type === "day" || part.type === "year")
+    .filter(
+      (part) =>
+        part.type === "month" || part.type === "day" || part.type === "year"
+    )
     .map((part) => part.value);
 
   const timeOptions = {
