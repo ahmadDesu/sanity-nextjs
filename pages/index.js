@@ -89,18 +89,6 @@ function getTimeZoneAbbreviation(timeZone) {
   return timeZoneAbbreviations[timeZone] || "";
 }
 
-function formatTimeTo24Hour(timeString) {
-  const [time, modifier] = timeString.split(" ");
-  const [hours, minutes] = time.split(":");
-  let formattedHours = parseInt(hours, 10);
-
-  if (modifier === "PM" && formattedHours !== 12) {
-    formattedHours += 12;
-  }
-
-  return `${formattedHours}:${minutes}`;
-}
-
 function formatDate(dateString, timeZone) {
   const date = new Date(dateString);
 
@@ -111,19 +99,27 @@ function formatDate(dateString, timeZone) {
     hour: "numeric",
     minute: "numeric",
   };
-  const formatter = new Intl.DateTimeFormat("en-US", options);
+  const formatter = new Intl.DateTimeFormat("id-ID", options);
 
   if (timeZone) {
     formatter.timeZone = timeZone;
   }
 
-  const formattedDate = formatter.format(date);
-  const formattedTime = formatTimeTo24Hour(
-    date.toLocaleTimeString("en-US", { timeZone })
-  );
+  const [month, day, year] = formatter
+    .formatToParts(date)
+    .filter((part) => part.type === "month" || part.type === "day" || part.type === "year")
+    .map((part) => part.value);
+
+  const timeOptions = {
+    hour: "2-digit",
+    minute: "2-digit",
+  };
+  const timeFormatter = new Intl.DateTimeFormat("id-ID", timeOptions);
+
+  const formattedTime = timeFormatter.format(date);
   const timeZoneAbbreviation = getTimeZoneAbbreviation(timeZone);
 
-  return `Created at: ${formattedDate}, ${formattedTime} ${timeZoneAbbreviation}`;
+  return `dibuat pada: ${month} ${day}, ${year} at ${formattedTime} ${timeZoneAbbreviation}`;
 }
 
 const client = createClient({
