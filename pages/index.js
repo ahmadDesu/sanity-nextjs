@@ -17,7 +17,8 @@ export default function IndexPage({ pets }) {
           <ul>
             {pets.map((pet) => (
               <li key={pet._id}>
-                <Link  href={`/detail/${pet._id}`}>
+                {/* Use the Link component to create navigation link */}
+                <Link href={`/detail/${pet._id}`}>
                   <a>
                     {getFirstImage(pet.content) && (
                       <img
@@ -39,7 +40,7 @@ export default function IndexPage({ pets }) {
             ))}
           </ul>
         ) : (
-          <p>No pets to show</p>
+          <p>Not Show</p>
         )}
       </main>
     </>
