@@ -82,10 +82,10 @@ function getFirstText(content) {
 }
 
 //function route
-function navigateToDetailPage(petId) {
-  const router = useRouter();
-  router.push(`/detail/${petId}`);
-}
+// function navigateToDetailPage(petId) {
+//   const router = useRouter();
+//   router.push(`/detail/${petId}`);
+// }
 
 // date created function
 function getTimeZoneAbbreviation(timeZone) {
