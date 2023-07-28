@@ -1,16 +1,31 @@
-import { useRouter } from "next/router";
+// pages/detail/[id].js
+import { createClient } from "next-sanity";
 
-export default function DetailPage() {
-  const router = useRouter();
-  const { id } = router.query;
-
-  // Here you can fetch the specific pet data using the `id` parameter and render the detailed content.
-
+export default function DetailPage({ pet }) {
   return (
     <div>
-      <h1>Detail Page</h1>
-      <p>Pet ID: {id}</p>
-      {/* Render the detailed content here */}
+      <h1>{pet.name}</h1>
+      {/* Render the rest of the pet's content here */}
     </div>
   );
+}
+
+const client = createClient({
+  projectId: "YOUR_PROJECT_ID",
+  dataset: "YOUR_DATASET",
+  apiVersion: "2021-10-21",
+  useCdn: false,
+});
+
+export async function getServerSideProps(context) {
+  const { id } = context.query;
+
+  // Fetch the pet data based on the ID from Sanity
+  const pet = await client.fetch(`*[_type == "pet" && _id == $id][0]`, { id });
+
+  return {
+    props: {
+      pet,
+    },
+  };
 }

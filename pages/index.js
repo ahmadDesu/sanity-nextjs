@@ -17,7 +17,7 @@ export default function IndexPage({ pets }) {
           <ul>
             {pets.map((pet) => (
               <li key={pet._id}>
-                <Link href={`/detail/${pet._id}`}>
+                <Link href="/detail/[id]" as={`/detail/${pet._id}`}>
                   <a>
                     {getFirstImage(pet.content) && (
                       <img
@@ -27,7 +27,9 @@ export default function IndexPage({ pets }) {
                       />
                     )}
                     <h3>{pet.name}</h3>
-                    {getFirstText(pet.content) && <p>{getFirstText(pet.content)}</p>}
+                    {getFirstText(pet.content) && (
+                      <p>{getFirstText(pet.content)}</p>
+                    )}
                     {pet._createdAt && (
                       <p>{formatDate(pet._createdAt, "Asia/Jakarta")}</p>
                     )}
