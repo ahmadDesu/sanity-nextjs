@@ -123,7 +123,7 @@ function formatDate(dateString, timeZone) {
   );
   const timeZoneAbbreviation = getTimeZoneAbbreviation(timeZone);
 
-  return `Created at: ${formattedDate}, ${timeZoneAbbreviation}`;
+  return `Created at: ${formattedDate}, ${formattedTime} ${timeZoneAbbreviation}`;
 }
 
 const client = createClient({
