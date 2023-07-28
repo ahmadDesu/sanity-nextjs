@@ -119,7 +119,7 @@ function formatDate(dateString, timeZone) {
   const formattedTime = timeFormatter.format(date);
   const timeZoneAbbreviation = getTimeZoneAbbreviation(timeZone);
 
-  return `dibuat pada: ${month} ${day}, ${year} at ${formattedTime} ${timeZoneAbbreviation}`;
+  return `dibuat pada: ${month}/${day}/${year}, ${formattedTime} ${timeZoneAbbreviation}`;
 }
 
 const client = createClient({
