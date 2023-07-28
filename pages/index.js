@@ -90,6 +90,7 @@ function getTimeZoneAbbreviation(timeZone) {
 
 function formatDate(dateString, timeZone) {
   const date = new Date(dateString);
+
   const options = {
     year: "numeric",
     month: "long",
@@ -97,10 +98,7 @@ function formatDate(dateString, timeZone) {
     hour: "numeric",
     minute: "numeric",
   };
-  const formatter = new Intl.DateTimeFormat("en-US", {
-    ...options,
-    timeZoneName: "short",
-  });
+  const formatter = new Intl.DateTimeFormat("en-US", options);
 
   if (timeZone) {
     formatter.timeZone = timeZone;
