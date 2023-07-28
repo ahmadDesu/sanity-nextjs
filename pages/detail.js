@@ -1,31 +1,13 @@
-// pages/detail/[id].js
-import { createClient } from "next-sanity";
+import { useRouter } from 'next/router';
 
-export default function DetailPage({ pet }) {
+export default function AnotherPage() {
+  const router = useRouter();
+  const { search } = router.query;
+
   return (
     <div>
-      <h1>{pet.name}</h1>
-      {/* Render the rest of the pet's content here */}
+      <h1>Another Page</h1>
+      <p>Search: {search}</p>
     </div>
   );
-}
-
-const client = createClient({
-  projectId: "mih1agps",
-  dataset: "production",
-  apiVersion: "2021-10-21",
-  useCdn: false,
-});
-
-export async function getServerSideProps(context) {
-  const { id } = context.query;
-
-  // Fetch the pet data based on the ID from Sanity
-  const pet = await client.fetch(`*[_type == "pet" && _id == $id][0]`, { id });
-
-  return {
-    props: {
-      pet,
-    },
-  };
 }

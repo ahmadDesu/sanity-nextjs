@@ -17,7 +17,12 @@ export default function IndexPage({ pets }) {
           <ul>
             {pets.map((pet) => (
               <li key={pet._id}>
-                <Link href="/detail/[id]" as={`/detail/${pet._id}`}>
+                <Link href={{
+                  pathname: "/detail",
+                  query: {
+                    search: 'search'
+                  }
+                }}>
                   <a>
                     {getFirstImage(pet.content) && (
                       <img
