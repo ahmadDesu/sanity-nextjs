@@ -11,8 +11,8 @@ export default function DetailPage({ pet }) {
 }
 
 const client = createClient({
-  projectId: "YOUR_PROJECT_ID",
-  dataset: "YOUR_DATASET",
+  projectId: "mih1agps",
+  dataset: "production",
   apiVersion: "2021-10-21",
   useCdn: false,
 });
