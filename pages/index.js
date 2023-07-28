@@ -25,6 +25,9 @@ export default function IndexPage({ pets }) {
                 {getFirstText(pet.content) && (
                   <p>{getFirstText(pet.content)}</p>
                 )}
+                {/* {pet._createdAt && (
+                  <p>{formatDate(pet._createdAt, "Asia/Jakarta")}</p>
+                )} */}
                 {pet._createdAt && (
                   <p>{formatDate(pet._createdAt, "Asia/Jakarta")}</p>
                 )}
@@ -88,18 +91,6 @@ function getTimeZoneAbbreviation(timeZone) {
   return timeZoneAbbreviations[timeZone] || "";
 }
 
-function formatTimeTo24Hour(timeString) {
-  const [time, modifier] = timeString.split(" ");
-  const [hours, minutes] = time.split(":");
-  let formattedHours = parseInt(hours, 10);
-
-  if (modifier === "PM" && formattedHours !== 12) {
-    formattedHours += 12;
-  }
-
-  return `${formattedHours}:${minutes}`;
-}
-
 function formatDate(dateString, timeZone) {
   const date = new Date(dateString);
 
@@ -110,20 +101,19 @@ function formatDate(dateString, timeZone) {
     hour: "numeric",
     minute: "numeric",
   };
-  const formatter = new Intl.DateTimeFormat("en-US", options);
+  const formatter = new Intl.DateTimeFormat("id-ID", options);
 
   if (timeZone) {
     formatter.timeZone = timeZone;
   }
 
   const formattedDate = formatter.format(date);
-  const formattedTime = formatTimeTo24Hour(
-    date.toLocaleTimeString("en-US", { timeZone })
-  );
+  const formattedTime = date.toLocaleTimeString("id-ID", { timeZone });
   const timeZoneAbbreviation = getTimeZoneAbbreviation(timeZone);
 
-  return `Created at: ${formattedDate}, ${formattedTime} ${timeZoneAbbreviation}`;
+  return `dibuat pada: ${formattedDate}, ${formattedTime} ${timeZoneAbbreviation}`;
 }
+// last date function
 
 const client = createClient({
   projectId: "mih1agps",
