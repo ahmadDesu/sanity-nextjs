@@ -88,6 +88,18 @@ function getTimeZoneAbbreviation(timeZone) {
   return timeZoneAbbreviations[timeZone] || "";
 }
 
+function formatTimeTo24Hour(timeString) {
+  const [time, modifier] = timeString.split(" ");
+  const [hours, minutes] = time.split(":");
+  let formattedHours = parseInt(hours, 10);
+
+  if (modifier === "PM" && formattedHours !== 12) {
+    formattedHours += 12;
+  }
+
+  return `${formattedHours}:${minutes}`;
+}
+
 function formatDate(dateString, timeZone) {
   const date = new Date(dateString);
 
@@ -105,9 +117,12 @@ function formatDate(dateString, timeZone) {
   }
 
   const formattedDate = formatter.format(date);
+  const formattedTime = formatTimeTo24Hour(
+    date.toLocaleTimeString("en-US", { timeZone })
+  );
   const timeZoneAbbreviation = getTimeZoneAbbreviation(timeZone);
 
-  return `Created at: ${formattedDate} ${timeZoneAbbreviation}`;
+  return `Created at: ${formattedDate}, ${formattedTime} ${timeZoneAbbreviation}`;
 }
 
 const client = createClient({
