@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { createClient } from "next-sanity";
 
 export default function IndexPage({ pets }) {
@@ -14,21 +15,22 @@ export default function IndexPage({ pets }) {
           <ul>
             {pets.map((pet) => (
               <li key={pet._id}>
-                {getFirstImage(pet.content) && (
-                  <img
-                    src={getFirstImage(pet.content)}
-                    id="thumbnail-post"
-                    alt="thumbnail"
-                  />
-                )}
-                <h3>{pet.name}</h3>
-                {getFirstText(pet.content) && (
-                  <p>{getFirstText(pet.content)}</p>
-                )}
-                {pet._createdAt && (
-                  <p>{formatDate(pet._createdAt, "Asia/Jakarta")}</p>
-                )}
-                
+                <Link href={`/detail/${pet._id}`}>
+                  <a>
+                    {getFirstImage(pet.content) && (
+                      <img
+                        src={getFirstImage(pet.content)}
+                        id="thumbnail-post"
+                        alt="thumbnail"
+                      />
+                    )}
+                    <h3>{pet.name}</h3>
+                    {getFirstText(pet.content) && <p>{getFirstText(pet.content)}</p>}
+                    {pet._createdAt && (
+                      <p>{formatDate(pet._createdAt, "Asia/Jakarta")}</p>
+                    )}
+                  </a>
+                </Link>
               </li>
             ))}
           </ul>
